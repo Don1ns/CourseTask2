@@ -1,6 +1,6 @@
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Scanner;
+import java.util.*;
+
+import static java.util.Collections.sort;
 
 public class Main {
     public static void main(String[] args) {
@@ -9,10 +9,12 @@ public class Main {
         scanner.useDelimiter("\n");
         System.out.print("Введите текст для вывода статистики: ");
         String text = scanner.next();
-        String[] words = text.split(" ");
-        System.out.println("В тексте " + words.length + " слов");
-        Map<String, Integer> counterMap = new HashMap<>();
-        for (String word : words) {
+        List<String> textList;
+        textList = Arrays.asList(text.split(" "));
+        sort(textList);
+        System.out.println("В тексте " + textList.size() + " слов");
+        Map<String, Integer> counterMap = new LinkedHashMap<>();
+        for (String word : textList) {
             if (counterMap.containsKey(word)) {
                 int value = counterMap.get(word);
                 value++;
@@ -21,9 +23,10 @@ public class Main {
                 counterMap.put(word, 1);
             }
         }
-        for (Map.Entry<String, Integer> stringIntegerEntry : counterMap.entrySet()) {
-            System.out.println(stringIntegerEntry);
-
+        List<Map.Entry<String, Integer>> wordsList = new LinkedList<>(counterMap.entrySet());
+        wordsList.sort(Collections.reverseOrder(Map.Entry.comparingByValue()));
+        for (Map.Entry<String, Integer> word : wordsList){
+            System.out.println(word.getValue() + " - " + word.getKey());
         }
     }
 }
